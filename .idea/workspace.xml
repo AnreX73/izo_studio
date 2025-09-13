@@ -1,11 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="430cadfd-bad7-440a-97a1-c992be040117" name="Changes" comment="" />
+    <list default="true" id="430cadfd-bad7-440a-97a1-c992be040117" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/izo_studio.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/css/styles.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/FotoDok.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/big_print.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/black.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/bp — копия.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/bp.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/brelock.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/canvas10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/carpet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/carpet1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/color.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/cutter.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/fnd3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/fut3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/futizo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/holst3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/insta.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/keramica3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/keyringizo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/kru3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/lam3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/lamin.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/logo3d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/magnet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/magnet1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/mugsizo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/na-banner.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/oc3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/oc4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/ovals.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/pazl.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/pech3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/pillow.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/pillow_magic.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/plotter3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/podush.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/puzzle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/rest3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/rest5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/scan1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/scan3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/stone.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/stone1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/suv.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/viz.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/viz1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/viz2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/viz3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/white.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/xerox1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/xerox4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/zapravka.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/images/zapravka2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/static/izo/js/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/templates/izo/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/templates/izo/header.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/templates/izo/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/templates/izo/nav.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/templatetags/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/templatetags/izo_tags.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izo/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izostudio/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izostudio/asgi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izostudio/settings.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izostudio/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/izostudio/wsgi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/izostudio/manage.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -21,6 +115,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master"
   }
