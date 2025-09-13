@@ -1,0 +1,86 @@
+<!--контейнер для шапки-->
+
+<div class="header-container" style=" background-color: rgb(250, 250, 250);">
+
+<!--контейнер для контента шапки-->
+<div class="header-wrapper">
+
+
+
+<!--блок с логотипом-->
+<div class="header-logo-wrapper">
+    {% for header_item in header %}
+    {% if header_item.title == 'логотип'%}
+    <a href="#{{nav_item.annotations1}}">
+    <div class="header_item"><img class="header-image" src="{{header_item.image.url}}" alt="{{header_item.title}}"/></div>
+        <span class="header-logo-annotation">{{header_item.annotations3}}</span>
+    </a>
+</div>
+
+    {% endif %}
+    {% endfor %}
+<!--конец блок с логотипом--> 
+
+<!--блок с адресом и ссылкой на карту-->
+{% for header_adress_item in header_contacts %}
+
+{% if header_adress_item.title == 'адрес'%}
+<div class="header_adress_item">{{header_adress_item.annotations1|safe}}
+   <a href="#{{header_adress_item.title}}"> <span class="header_adress_link">{{header_adress_item.annotations2|safe}}</span></a>
+</div>
+{% endif %}
+
+{% endfor %}
+<!-- конец блок с адресом и ссылкой на карту-->
+
+<!--блок с адресом филиала и ссылкой на карту-->
+{% for header_adress_item in header_contacts %}
+
+{% if header_adress_item.title == 'адрес филиала'%}
+
+
+<div class="header_adress_item">
+    <p style="color: rgb(109, 109, 109);">{{header_adress_item.title}}</p>
+    {{header_adress_item.annotations1|safe}}
+    
+   <a href="#{{header_adress_item.title}}"> <span class="header_adress_link">{{header_adress_item.annotations2|safe}}</span></a>
+</div>
+{% endif %}
+
+{% endfor %}
+<!-- конец блок с адресом и ссылкой на карту-->
+
+<!-- блок с контактами--> 
+<div class="header-contacts-wrapper">
+{% for header_contacts_item in header_contacts %}
+
+{% if header_contacts_item.title != 'адрес' and header_contacts_item.title != 'адрес филиала'%}
+<div class="header-contacts-item">
+    <img class="header-contacts-image" src="{{header_contacts_item.image.url}}" alt="{{header_contacts_item.title}}"/>
+    <span class="header-contacts-text">{{header_contacts_item.annotations1|safe}}</span>
+</div>
+
+{% endif %}
+{% endfor %}
+</div>
+<!-- конец блок с контактами--> 
+
+
+<!-- <div class="header-links-wrapper">
+    {% for header_item in header %}
+    {% if header_item.title == 'ссылка на фотоуслуги'%}
+    <div class="header-link-item"><img class="header-image" src="{{header_item.image.url}}" alt="{{header_item.title}}"/></div>
+    {% endif %}
+    {% endfor %}
+    {% for header_item in header %}
+    {% if header_item.title == 'ссылка на фотосувениры'%}
+    <div class="header-link-item"><img class="header-image" src="{{header_item.image.url}}" alt="{{header_item.title}}"/></div>
+    {% endif %}
+    {% endfor %}
+</div> -->
+
+  
+</div>
+<!-- конец контейнер для контента шапки-->
+</div>
+<!-- конец контейнер для шапки-->

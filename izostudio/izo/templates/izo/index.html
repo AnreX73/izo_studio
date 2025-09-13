@@ -1,0 +1,274 @@
+{% extends 'izo/base.html' %}
+
+{% load izo_tags %}
+
+{% block content %}
+<a class="anchor" name={{main_link.annotations1}}></a>
+<div class="header-fixer">
+    {% show_header %}
+    {% show_nav %}
+</div>
+<!--   модальное окно объявления  -->
+{% for post in posts%}
+{% if post.is_published %}
+<div class="post-modal" data-modal="1">
+    <span class="post-modal__cross"> Х </span>
+    <h3 class="post-modal__title">{{post.title}}</h3>
+    <div class="post-modal__content">{{post.content|safe}}</div>
+</div>
+<div class="post-overlay" id="post-overlay-modal"></div>
+{%endif%}
+{%endfor%}
+<!--  конец модальное окно объявления  -->
+
+<div class="psevdo"></div>
+
+<div class="general-wrapper">
+    <div class="main-menu-wrapper">
+        <a class="anchor" name="{{services_title.name}}"></a>
+        <h2>{{services_title.name}}</h2>
+        <div class="main-menu-items">
+            {% for serv in services %}
+            {% if serv.is_published %}
+            <a href="#{{serv.slug}}">
+                <figure> <img class="main-menu-image" src="{{serv.menu_image.url}}" alt="{{serv.title}}" />
+                    <figcaption> {{serv.title}}</figcaption>
+                </figure>
+            </a>
+            {%endif%}
+            {%endfor%}
+        </div>
+        <a class="anchor" name="{{souvenirs_title.name}}"></a>
+        <h2>{{souvenirs_title.name}}</h2>
+        <div class="main-menu-items">
+            {% for serv in souvenirs %}
+            {% if serv.is_published %}
+            <a href="#{{serv.slug}}">
+                <figure> <img class="main-menu-image" src="{{serv.menu_image.url}}" alt="{{serv.title}}" />
+                    <figcaption> {{serv.title}}</figcaption>
+                </figure>
+            </a>
+            {%endif%}
+            {%endfor%}
+        </div>
+    </div>
+
+    <div class="items-pages-wrapper">
+
+        <div class="overlay" id="overlay-modal"></div>
+        {% for ex in extra %}
+        {% if ex.is_published %}
+        <div class="modal prices-modal" data="{{ex.extraContent_id}}">
+            <svg class="modal__cross js-modal-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path
+                    d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z" />
+            </svg>
+            <div class="extra-title">{{ex.title}}</div>
+            {% if ex.extra_image %}
+            <img class="extra-image" src="{{ex.extra_image.url}}" alt="{{ex.title}}" />
+            {% endif %}
+            <div class="extra-content">{{ex.content|safe}}</div>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <div class="services-pages">
+
+            <h2>{{services_title.name}}</h2>
+            <div class="service-page">
+                {% for serv in services %}
+                <div class="service-title"><a class="anchor service-anchor" name="{{serv.slug}}"></a>
+                    <h3>{{serv.title}}</h3>
+                </div>
+                <img class="service-image" src="{{serv.page_image.url}}" alt="{{serv.title}}" />
+                <div class="service-description">{{serv.annotation|safe}}</div>
+                {% for price in prices %}
+                {% if price.service_id == serv.id%}
+                <div class="price-info"><span class="price-title">{{price.title}}</span>{{price.content|safe}}
+                    <span class="price-extra-link js-open-modal" data="{{price.id}}">{{price.extraLink}}</span>
+                </div>
+
+                {%endif%}
+                {% endfor %}
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <div class="services-pages">
+            <h2>{{souvenirs_title.name}}</h2>
+            <div class="service-page">
+                {% for serv in souvenirs %}
+                <a class="anchor" name="{{serv.slug}}"></a>
+                <h3 class="service-title">{{serv.title}} </h3>
+                <img class="service-image" src="{{serv.page_image.url}}" alt="{{serv.title}}" />
+                <div class="service-description">{{serv.annotation|safe}}</div>
+                {% for price in prices %}
+                {% if price.service_id == serv.id%}
+                <div class="price-info"><span class="price-title">{{price.title}}</span>{{price.content|safe}}
+                    <span class="price-extra-link js-open-modal" data="{{price.id}}">{{price.extraLink}}</span>
+                </div>
+
+                {%endif%}
+                {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+    <a class="anchor" name="{{anchor.annotations1}}"></a>
+    <!-- <div class="contacts-wrapper">
+        <div class="contacts-info">
+            <img class="contacts-logo" src="{{logo.image.url}}" alt="{{logo.title}}" />
+
+            {% for contact in contacts %}
+
+            {% if contact.title == 'адрес филиала'%}
+            <div class="contacts-info-item">
+                {{contact.title}}
+            </div>
+            {% endif %}
+
+            {% if contact.is_published %}
+            <div class="contacts-info-item">
+                {% if contact.image %}
+                <img class="contacts-icon" src="{{contact.image.url}}" alt="{{contact.title}}" />
+                {% endif %}
+                {% if contact.title == 'телефон' %}
+                <a class="contact-info" href="tel:{{contact.annotations1|cut:' '|safe}}">
+                    <div class="contact-info"> {{contact.annotations1|safe}}</div>
+                </a>
+                {% else %}
+                <div class="contact-info"><a class="anchor" name="{{contact.title}}"></a>{{contact.annotations1|safe}}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="contacts-map">
+            {% for contact in contacts %}
+            {% if contact.title == 'карта'%}
+            <div class="map">
+                {%autoescape off%}
+                <script {{contact.annotations2 }}></script>
+                {%endautoescape off%}
+            </div>
+            {% endif %}
+            {% if contact.title == 'мини-карта'%}
+            <div class="mini-map">
+                {%autoescape off%}
+                <script {{contact.annotations2 }}></script>
+                {%endautoescape off%}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div> -->
+
+<div class="contacts__wrapper">
+    <p style="text-align: center;font-size: 1.3rem;">Контакты</p>
+    <div id="first-contact" class="contact_container">
+        
+        <div class="contact_info">
+            {% for contact in contacts %}
+            {% if contact.title != 'адрес филиала' and contact.is_published %}
+            <div class="contact_info_item">
+                {% if contact.image %}
+                <img class="contacts_icon" src="{{contact.image.url}}" alt="{{contact.title}}" />
+                {% else %}
+                <div> </div>
+                {% endif %}
+                {% if contact.title == 'телефон' %}
+                <a class="contact_info_text" href="tel:{{contact.annotations1|cut:' '|safe}}">
+                    <div class="contact_info"> {{contact.annotations1|safe}}</div>
+                </a>
+                {% else %}
+                <div class="contact_info_text"><a class="anchor" name="{{contact.title}}"></a>{{contact.annotations1|safe}}
+                </div>
+                {% endif %}
+                
+
+            </div>
+           
+            {% endif %}
+
+            {% endfor %}
+        </div>
+        <div class="contact_map">
+            {% for contact in contacts %}
+            {% if contact.title == 'карта'%}
+            {{contact.annotations2|safe}}
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="contact_map_mini">
+            {% for contact in contacts %}
+            {% if contact.title == 'мини-карта'%}
+            {{contact.annotations2|safe}}
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="contact_map_micro">
+            {% for contact in contacts %}
+            {% if contact.title == 'микро-карта'%}
+            {{contact.annotations2|safe}}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <p style="text-align: center;font-size: 1.3rem; margin-top: 1.5rem;">Контакты филиала</p>
+    <div id="second-contact" class="contact_container">
+        <div class="contact_info">
+            {% for contact in contacts %}
+            {% if contact.title == 'адрес филиала' and contact.is_published or contact.title == 'email филиала' or contact.title == 'режим работы филиала'%}
+            <div class="contact_info_item">
+                {% if contact.image %}
+                <img class="contacts_icon" src="{{contact.image.url}}" alt="{{contact.title}}" />
+                {% else %}
+                <div> </div>
+                {% endif %}
+                {% if contact.title == 'телефон' %}
+                <a class="contact_info_text" href="tel:{{contact.annotations1|cut:' '|safe}}">
+                    <div class="contact_info"> {{contact.annotations1|safe}}</div>
+                </a>
+                {% else %}
+                <div class="contact_info_text"><a class="anchor" name="{{contact.title}}"></a>{{contact.annotations1|safe}}
+                </div>
+                {% endif %}
+                
+
+            </div>
+           
+            {% endif %}
+
+            {% endfor %}
+        </div>
+        <div class="contact_map">
+            {% for contact in contacts %}
+            {% if contact.title == 'карта филиала'%}
+            {{contact.annotations2|safe}}
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="contact_map_mini">
+            {% for contact in contacts %}
+            {% if contact.title == 'мини-карта филиала'%}
+            {{contact.annotations2|safe}}
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="contact_map_micro">
+            {% for contact in contacts %}
+            {% if contact.title == 'микро-карта филиал'%}
+            {{contact.annotations2|safe}}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div style="text-align: center; padding-bottom: 20px;">сделано в smstudio</div>
+{% endblock content %}

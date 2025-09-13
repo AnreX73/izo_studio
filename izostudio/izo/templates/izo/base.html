@@ -1,0 +1,23 @@
+{% load static %}
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="{% static 'izo/images/favicon.png' type="image/x-icon" %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'izo/css/styles.css' %}"/>
+</head>
+<body>
+
+<div class="all_content_wrapper">
+
+{% block content %}
+
+{% endblock content %}
+</div>
+<script type="text/javascript" src='{% static  "izo/js/main.js" %}'></script>
+</body>
+</html>
