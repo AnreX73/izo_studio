@@ -82,3 +82,64 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
 });
+
+/* Переключатель светлой и тёмной темы */
+(function () {
+    var root = document.documentElement;
+    var toggle = document.getElementById('theme-toggle');
+    var meta = document.querySelector('meta[name="theme-color"]');
+    var storageKey = 'izo-theme';
+
+    function getTheme() {
+        return root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    }
+
+    function updateToggle(theme) {
+        if (!toggle) return;
+        var isDark = theme === 'dark';
+        toggle.setAttribute('aria-checked', isDark ? 'true' : 'false');
+        toggle.setAttribute('aria-label', isDark
+            ? 'Переключить на светлую тему'
+            : 'Переключить на тёмную тему');
+        toggle.setAttribute('title', isDark ? 'Светлая тема' : 'Тёмная тема');
+    }
+
+    function applyTheme(theme, persist) {
+        root.setAttribute('data-theme', theme);
+        if (meta) {
+            meta.setAttribute('content', theme === 'dark' ? '#101216' : '#fafafa');
+        }
+        updateToggle(theme);
+        if (persist) {
+            try {
+                localStorage.setItem(storageKey, theme);
+            } catch (e) {}
+        }
+    }
+
+    applyTheme(getTheme(), false);
+
+    if (toggle) {
+        toggle.addEventListener('click', function () {
+            applyTheme(getTheme() === 'dark' ? 'light' : 'dark', true);
+        });
+    }
+
+    /* Следим за системной темой, пока пользователь не выбрал свою */
+    if (window.matchMedia) {
+        var media = window.matchMedia('(prefers-color-scheme: dark)');
+        var onSystemChange = function (event) {
+            var saved = null;
+            try {
+                saved = localStorage.getItem(storageKey);
+            } catch (e) {}
+            if (saved === 'dark' || saved === 'light') return;
+            applyTheme(event.matches ? 'dark' : 'light', false);
+        };
+        if (typeof media.addEventListener === 'function') {
+            media.addEventListener('change', onSystemChange);
+        } else if (typeof media.addListener === 'function') {
+            media.addListener(onSystemChange);
+        }
+    }
+})();

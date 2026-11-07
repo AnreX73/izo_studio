@@ -11,6 +11,19 @@ def show_nav():
     return {"nav": nav}
 
 
+@register.filter
+def dark_icon(url):
+    """Возвращает путь к версии иконки для тёмной темы (суффикс _d)."""
+    if not url:
+        return url
+    name, dot, ext = url.rpartition('.')
+    if not dot:
+        return url + '_d'
+    if name.endswith('_d'):
+        return url
+    return f'{name}_d.{ext}'
+
+
 @register.inclusion_tag('izo/header.html')
 def show_header():
     header = Nav.objects.all()

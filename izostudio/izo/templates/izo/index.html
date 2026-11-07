@@ -31,7 +31,9 @@
             {% for serv in services %}
             {% if serv.is_published %}
             <a href="#{{serv.slug}}">
-                <figure> <img class="main-menu-image" src="{{serv.menu_image.url}}" alt="{{serv.title}}" />
+                <figure>
+                    <img class="main-menu-image main-menu-image--light" src="{{serv.menu_image.url}}" alt="{{serv.title}}" />
+                    <img class="main-menu-image main-menu-image--dark" src="{{serv.menu_image.url|dark_icon}}" alt="{{serv.title}}" />
                     <figcaption> {{serv.title}}</figcaption>
                 </figure>
             </a>
@@ -44,7 +46,9 @@
             {% for serv in souvenirs %}
             {% if serv.is_published %}
             <a href="#{{serv.slug}}">
-                <figure> <img class="main-menu-image" src="{{serv.menu_image.url}}" alt="{{serv.title}}" />
+                <figure>
+                    <img class="main-menu-image main-menu-image--light" src="{{serv.menu_image.url}}" alt="{{serv.title}}" />
+                    <img class="main-menu-image main-menu-image--dark" src="{{serv.menu_image.url|dark_icon}}" alt="{{serv.title}}" />
                     <figcaption> {{serv.title}}</figcaption>
                 </figure>
             </a>

@@ -1,6 +1,6 @@
 <!--контейнер для шапки-->
 
-<div class="header-container" style=" background-color: rgb(250, 250, 250);">
+<div class="header-container">
 
 <!--контейнер для контента шапки-->
 <div class="header-wrapper">
@@ -40,7 +40,7 @@
 
 
 <div class="header_adress_item">
-    <p style="color: rgb(109, 109, 109);">{{header_adress_item.title}}</p>
+    <p class="header_adress_title">{{header_adress_item.title}}</p>
     {{header_adress_item.annotations1|safe}}
     
    <a href="#{{header_adress_item.title}}"> <span class="header_adress_link">{{header_adress_item.annotations2|safe}}</span></a>
