@@ -90,8 +90,14 @@ services:
     image: nginx:1.27-alpine
     container_name: izostudio-nginx
     restart: always
+    # 80/443 на хосте занимает Nginx Proxy Manager.
+    # Наружу этот порт не публикуем: NPM ходит на izostudio-nginx:80 по общей сети.
+    # 127.0.0.1:8081 оставлен только для отладки с самого сервера.
     ports:
-      - "80:80"
+      - "127.0.0.1:8081:80"
+    networks:
+      - default
+      - npm_proxy
     volumes:
       # ВАЖНО: монтируем как конфиг сайта, а не как весь nginx.conf
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
@@ -113,11 +119,19 @@ services:
     container_name: izostudio-adminer
     restart: always
     profiles: ["tools"]
+    # 8080 может быть занят другим проектом на том же сервере
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8083:8080"
     depends_on:
       db:
         condition: service_healthy
+
+networks:
+  # Общая сеть с Nginx Proxy Manager. Имя задаётся в .env.deploy (NPM_NETWORK).
+  # Узнать: docker network ls
+  npm_proxy:
+    external: true
+    name: ${NPM_NETWORK:-npm_default}
 
 volumes:
   mysql_:
