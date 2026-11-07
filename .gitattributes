@@ -1,0 +1,7 @@
+# Shell-скрипты и конфиги nginx должны попадать на сервер с LF,
+# иначе entrypoint падает на Windows-переводах строк.
+*.sh        text eol=lf
+Dockerfile  text eol=lf
+*.conf      text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
