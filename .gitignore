@@ -1,3 +1,46 @@
-/izostudio/db.sqlite3
-/.venv/
-/izostudio/izo/static/izo/images/
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+ENV/
+
+# Django
+db.sqlite3
+*.log
+/media/
+izostudio/media/
+/staticfiles/
+izostudio/staticfiles/
+backup/
+
+# Environment
+.env
+.env.*
+!.env.example
+!.env.deploy.example
+
+# IDE / OS
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store
+*.swp
+
+# Collected static (collectstatic) and legacy editor assets
+izostudio/static/
+izostudio/izo/static/izo/images/
+izostudio/izo/static/ckeditor/
+
+# Frontend
+node_modules/
+npm-debug.log*
+*.js.map
+*.css.map
+
+# Misc
+*.ctl
+*.sock
+.ipynb_checkpoints/
