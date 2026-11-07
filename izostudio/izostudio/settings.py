@@ -87,26 +87,20 @@ WSGI_APPLICATION = 'izostudio.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# Локально используется SQLite (db.sqlite3).
-# На сервере в .env.deploy задаётся DATABASE_ENGINE=mysql — тогда работает MySQL из compose.
+# Везде SQLite. Локально — db.sqlite3 рядом с manage.py,
+# на сервере — файл в ./data (путь задаётся через SQLITE_PATH).
+SQLITE_PATH = os.getenv("SQLITE_PATH") or str(BASE_DIR / "db.sqlite3")
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': SQLITE_PATH,
+        'OPTIONS': {
+            # Запас на параллельные запросы gunicorn при блокировке файла
+            'timeout': 20,
+        },
     }
 }
-
-if os.getenv("DATABASE_ENGINE", "sqlite").strip().lower() == "mysql":
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv("DATABASE_NAME", "_izo"),
-        'USER': os.getenv("DATABASE_USER", ""),
-        'PASSWORD': os.getenv("DATABASE_PASSWORD", ""),
-        'HOST': os.getenv("DATABASE_HOST", "db"),
-        'PORT': os.getenv("DATABASE_PORT", "3306"),
-        'OPTIONS': {'charset': 'utf8mb4'},
-        'CONN_MAX_AGE': 60,
-    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

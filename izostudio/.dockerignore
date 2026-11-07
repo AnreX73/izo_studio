@@ -16,6 +16,7 @@ venv
 media
 static
 staticfiles
+data
 *.sqlite3
 backup
 certbot

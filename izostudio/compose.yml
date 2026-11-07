@@ -1,77 +1,45 @@
-# Продакшен-стек: nginx + gunicorn (Django) + MySQL.
+# Продакшен-стек: nginx + gunicorn (Django) + SQLite.
+#
+# База — один файл SQLite в ./data (bind-mount, переживает пересборку).
 #
 # Первый запуск на сервере (файл .env.deploy лежит рядом с compose.yml):
-#   1) проверить, какие тома уже есть:  docker volume ls
-#   2) если томов izostudio_mysql_ / izostudio_media нет — создать:
-#        docker volume create izostudio_mysql_
-#        docker volume create izostudio_media
-#   3) поднять стек:
+#   1) создать каталог под базу:  mkdir -p data
+#   2) если нужно перенести данные — скопировать локальный db.sqlite3 в data/
+#      (без файла при старте создастся пустая база и применятся миграции)
+#   3) проверить тома media:  docker volume ls
+#      если тома izostudio_media нет — создать:  docker volume create izostudio_media
+#   4) поднять стек:
 #        docker compose --env-file .env.deploy up -d --build
 #
-# Тома с данными (mysql_, media) объявлены external — compose не создаст
-# пустой том молча и не удалит их при `down -v`.
+# Том media объявлен external — compose не создаст пустой том молча
+# и не удалит его при `down -v`.
 
 name: izostudio
 
 services:
-  db:
-    image: mysql:8.0
-    container_name: izostudio-db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD:?укажите DATABASE_ROOT_PASSWORD в .env.deploy}
-      MYSQL_DATABASE: ${DATABASE_NAME:?укажите DATABASE_NAME в .env.deploy}
-      MYSQL_USER: ${DATABASE_USER:?укажите DATABASE_USER в .env.deploy}
-      MYSQL_PASSWORD: ${DATABASE_PASSWORD:?укажите DATABASE_PASSWORD в .env.deploy}
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-      # Совместимость с mysqlclient и пользователями, созданными в MySQL 8.0
-      - --default-authentication-plugin=mysql_native_password
-    volumes:
-      - mysql_:/var/lib/mysql
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD --silent"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
-
   web:
     build:
       context: .
     container_name: izostudio-web
     restart: always
     # Значения берутся из .env.deploy (передаётся через --env-file).
-    # Root-пароль MySQL сюда намеренно не попадает.
     environment:
       DEBUG: ${DEBUG:-False}
       SECRET_KEY: ${SECRET_KEY:?укажите SECRET_KEY в .env.deploy}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1}
       CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS:-}
-      DATABASE_ENGINE: ${DATABASE_ENGINE:-mysql}
-      DATABASE_NAME: ${DATABASE_NAME:?укажите DATABASE_NAME в .env.deploy}
-      DATABASE_USER: ${DATABASE_USER:?укажите DATABASE_USER в .env.deploy}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD:?укажите DATABASE_PASSWORD в .env.deploy}
-      DATABASE_HOST: ${DATABASE_HOST:-db}
-      DATABASE_PORT: ${DATABASE_PORT:-3306}
+      # Единственная база — SQLite-файл в ./data (см. volumes ниже)
+      SQLITE_PATH: /app/data/db.sqlite3
       GUNICORN_WORKERS: ${GUNICORN_WORKERS:-3}
       GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-120}
       SECURE_SSL_REDIRECT: ${SECURE_SSL_REDIRECT:-False}
       SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-False}
       CSRF_COOKIE_SECURE: ${CSRF_COOKIE_SECURE:-False}
-    depends_on:
-      db:
-        condition: service_healthy
     # Наружу не публикуется: доступ только через nginx
     expose:
       - "8000"
     volumes:
+      - ./data:/app/data
       - media:/app/media
       - static_files:/app/staticfiles
     healthcheck:
@@ -112,20 +80,6 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  # Adminer для разовых работ с БД. По умолчанию не запускается:
-  #   docker compose --env-file .env.deploy --profile tools up -d adminer
-  adminer:
-    image: adminer:4
-    container_name: izostudio-adminer
-    restart: always
-    profiles: ["tools"]
-    # 8080 может быть занят другим проектом на том же сервере
-    ports:
-      - "127.0.0.1:8083:8080"
-    depends_on:
-      db:
-        condition: service_healthy
-
 networks:
   # Общая сеть с Nginx Proxy Manager. Имя задаётся в .env.deploy (NPM_NETWORK).
   # Узнать: docker network ls
@@ -134,9 +88,6 @@ networks:
     name: ${NPM_NETWORK:-npm_default}
 
 volumes:
-  mysql_:
-    external: true
-    name: izostudio_mysql_
   media:
     external: true
     name: izostudio_media

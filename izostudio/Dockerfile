@@ -8,13 +8,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Системные зависимости для сборки mysqlclient
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        build-essential \
-        default-libmysqlclient-dev \
-        pkg-config \
-    && rm -rf /var/lib/apt/lists/*
-
 # Сначала зависимости — слой кэшируется, пока не меняется requirements.txt
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
@@ -23,7 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Каталоги под тома (media/staticfiles) и запуск entrypoint
-RUN mkdir -p /app/media /app/staticfiles \
+RUN mkdir -p /app/media /app/staticfiles /app/data \
     && chmod +x /app/docker-entrypoint.sh
 
 EXPOSE 8000

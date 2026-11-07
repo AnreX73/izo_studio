@@ -15,6 +15,7 @@ izostudio/media/
 /staticfiles/
 izostudio/staticfiles/
 backup/
+izostudio/data/
 
 # Environment
 .env
