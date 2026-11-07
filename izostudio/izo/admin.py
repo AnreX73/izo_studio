@@ -1,7 +1,5 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from django import forms
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 from izo.models import *
 
@@ -14,16 +12,7 @@ class CategoryAdmin(admin.ModelAdmin):
     save_on_top = True
 
 
-class PostAdminForm(forms.ModelForm):
-    content = forms.CharField(label='Сообщение', required=False, widget=CKEditorUploadingWidget())
-
-    class Meta:
-        model = Post
-        fields = '__all__'
-
-
 class PostAdmin(admin.ModelAdmin):
-    form = PostAdminForm
     list_display = ('id', 'title', 'is_published',)
     list_display_links = ('id', 'title')
     search_fields = ('title',)
@@ -31,16 +20,7 @@ class PostAdmin(admin.ModelAdmin):
     save_on_top = True
 
 
-class PricesAdminForm(forms.ModelForm):
-    content = forms.CharField(label='Инфоромация о ценах', required=False, widget=CKEditorUploadingWidget())
-
-    class Meta:
-        model = Prices
-        fields = '__all__'
-
-
 class PricesAdmin(admin.ModelAdmin):
-    form = PricesAdminForm
     list_display = ('id', 'title', 'service', 'is_published')
     list_display_links = ('id', 'title')
     search_fields = ('title', 'service')
@@ -48,16 +28,7 @@ class PricesAdmin(admin.ModelAdmin):
     save_on_top = True
 
 
-class ExtraAdminForm(forms.ModelForm):
-    content = forms.CharField(label='Дополнительная информация ', required=False, widget=CKEditorUploadingWidget())
-
-    class Meta:
-        model = Extra
-        fields = '__all__'
-
-
 class ExtraAdmin(admin.ModelAdmin):
-    form = ExtraAdminForm
     list_display = ('id', 'title', 'extraContent', 'getHtmlPhoto', 'is_published',)
     list_display_links = ('id', 'title')
     search_fields = ('title', 'extraContent',)
@@ -85,18 +56,9 @@ class NavAdmin(admin.ModelAdmin):
     gethtmlPhoto.short_description = 'миниатюра'
 
 
-# class ContactsAdminForm(forms.ModelForm):
-#     annotation = forms.CharField(label='первое значение', required=False, widget=CKEditorUploadingWidget())
-
-#     class Meta:
-#         model = Contacts
-#         fields = '__all__'
-
-
 class ContactsAdmin(admin.ModelAdmin):
-    # form = ContactsAdminForm
     list_display = (
-    'id', 'title', 'gethtmlPhoto', 'is_header_published', 'is_published', 'annotations1', 'annotations2')
+        'id', 'title', 'gethtmlPhoto', 'is_header_published', 'is_published', 'annotations1', 'annotations2')
     list_display_links = ('id', 'title')
     search_fields = ('title',)
     prepopulated_fields = {'slug': ('title',)}
@@ -109,16 +71,7 @@ class ContactsAdmin(admin.ModelAdmin):
     gethtmlPhoto.short_description = 'миниатюра'
 
 
-class ServicesAdminForm(forms.ModelForm):
-    annotation = forms.CharField(label='Рекламное описание ', required=False, widget=CKEditorUploadingWidget())
-
-    class Meta:
-        model = Services
-        fields = '__all__'
-
-
 class ServicesAdmin(admin.ModelAdmin):
-    form = ServicesAdminForm
     list_display = ('id', 'title', 'getHtmlPhoto', 'cat', 'time_create', 'is_published')
     list_display_links = ('id', 'title')
     search_fields = ('title',)

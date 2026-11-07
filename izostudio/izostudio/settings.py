@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,12 +21,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zg@^%b%)jo!p45!n_4*i8f=n*u%2^&l75h)4ry(*r!p!xr)j1i'
+load_dotenv()
+
+
+def env_bool(name, default=False):
+    return os.getenv(name, str(default)).strip().lower() in ("1", "true", "yes", "on")
+
+
+def env_list(name, default=""):
+    return [item.strip() for item in os.getenv(name, default).split(",") if item.strip()]
+
+
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env_bool("DEBUG", False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", "localhost,127.0.0.1")
+
+# Нужно для POST-запросов админки, когда сайт открыт по HTTPS (Django 4+).
+CSRF_TRUSTED_ORIGINS = env_list("CSRF_TRUSTED_ORIGINS")
 
 # Application definition
 
@@ -35,8 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ckeditor',
-    'ckeditor_uploader',
+    'django_ckeditor_5',
     'izo.apps.IzoConfig',
 ]
 
@@ -72,23 +87,26 @@ WSGI_APPLICATION = 'izostudio.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+# Локально используется SQLite (db.sqlite3).
+# На сервере в .env.deploy задаётся DATABASE_ENGINE=mysql — тогда работает MySQL из compose.
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': '_izo',
-        'USER': 'AnreX',
-        'PASSWORD': 'll010800ll',
-        'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-
 }
+
+if os.getenv("DATABASE_ENGINE", "sqlite").strip().lower() == "mysql":
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv("DATABASE_NAME", "_izo"),
+        'USER': os.getenv("DATABASE_USER", ""),
+        'PASSWORD': os.getenv("DATABASE_PASSWORD", ""),
+        'HOST': os.getenv("DATABASE_HOST", "db"),
+        'PORT': os.getenv("DATABASE_PORT", "3306"),
+        'OPTIONS': {'charset': 'utf8mb4'},
+        'CONN_MAX_AGE': 60,
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -123,28 +141,89 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = []
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = 'ecn/media/'
+MEDIA_URL = '/media/'
 
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_CONFIGS = {
+
+customColorPalette = [
+    {'color': 'hsl(4, 90%, 58%)', 'label': 'Red'},
+    {'color': 'hsl(340, 82%, 52%)', 'label': 'Pink'},
+    {'color': 'hsl(291, 64%, 42%)', 'label': 'Purple'},
+    {'color': 'hsl(262, 52%, 47%)', 'label': 'Deep Purple'},
+    {'color': 'hsl(231, 48%, 48%)', 'label': 'Indigo'},
+    {'color': 'hsl(207, 90%, 54%)', 'label': 'Blue'},
+]
+
+CKEDITOR_5_CONFIGS = {
     'default': {
-        'toolbar': 'Full',
-        'width': 'auto',
-        'height': '60%'
+        'blockToolbar': [
+            'paragraph', 'heading1', 'heading2', 'heading3',
+            '|', 'bulletedList', 'numberedList', '|', 'blockQuote',
+        ],
+        'toolbar': {
+            'items': [
+                'heading', '|', 'outdent', 'indent', '|',
+                'bold', 'italic', 'link', 'underline', 'strikethrough', '|',
+                'highlight', 'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
+                'sourceEditing', 'insertImage', 'mediaEmbed', '|',
+                'bulletedList', 'numberedList', 'todoList', '|',
+                'blockQuote', 'codeBlock', 'horizontalLine', '|',
+                'insertTable', 'removeFormat', '|', 'alignment',
+            ],
+            'shouldNotGroupWhenFull': 'true',
+        },
+        'language': 'ru',
+        'image': {
+            'toolbar': [
+                'imageTextAlternative', '|',
+                'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
+                '|', 'imageStyle:side',
+            ],
+            'styles': ['full', 'side', 'alignLeft', 'alignRight', 'alignCenter'],
+        },
+        'table': {
+            'contentToolbar': ['tableColumn', 'tableRow', 'mergeTableCells',
+                               'tableProperties', 'tableCellProperties'],
+            'tableProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette,
+            },
+            'tableCellProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette,
+            },
+        },
+        'heading': {
+            'options': [
+                {'model': 'paragraph', 'title': 'Абзац', 'class': 'ck-heading_paragraph'},
+                {'model': 'heading1', 'view': 'h1', 'title': 'Заголовок 1', 'class': 'ck-heading_heading1'},
+                {'model': 'heading2', 'view': 'h2', 'title': 'Заголовок 2', 'class': 'ck-heading_heading2'},
+                {'model': 'heading3', 'view': 'h3', 'title': 'Заголовок 3', 'class': 'ck-heading_heading3'},
+            ],
+        },
     },
 }
 
+CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"
+CKEDITOR_5_FILE_STORAGE = "izo.storage.CKEditor5Storage"
+CKEDITOR_5_MAX_FILE_SIZE = 10
 
+# За nginx: реальная схема запроса передаётся в X-Forwarded-Proto.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Включать через .env.deploy, когда сайт уже реально открывается по HTTPS.
+SECURE_SSL_REDIRECT = env_bool("SECURE_SSL_REDIRECT", False)
+SESSION_COOKIE_SECURE = env_bool("SESSION_COOKIE_SECURE", False)
+CSRF_COOKIE_SECURE = env_bool("CSRF_COOKIE_SECURE", False)
 
 LOGOUT_REDIRECT_URL = '/'
